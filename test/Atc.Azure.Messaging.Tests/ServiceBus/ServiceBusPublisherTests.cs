@@ -1,0 +1,131 @@
+using Atc.Azure.Messaging.ServiceBus;
+using AutoFixture.AutoNSubstitute;
+using Azure.Messaging.ServiceBus;
+
+namespace Atc.Azure.Messaging.Tests.ServiceBus
+{
+    public class ServiceBusPublisherTests
+    {
+        [Theory, AutoNSubstituteData]
+        public async Task Should_Get_ServiceBusSender_For_Topic(
+            [Frozen] IServiceBusSenderProvider provider,
+            ServiceBusPublisher sut,
+            [Substitute] ServiceBusSender sender,
+            string topicName,
+            string messageBody,
+            IDictionary<string, string> properties,
+            TimeSpan timeToLive,
+            string sessionId,
+            CancellationToken cancellationToken)
+        {
+            provider
+                .GetSender(default!)
+                .ReturnsForAnyArgs(sender);
+
+            await sut.PublishAsync(
+                topicName,
+                sessionId,
+                messageBody,
+                properties,
+                timeToLive,
+                cancellationToken);
+
+            _ = provider
+                .Received(1)
+                .GetSender(topicName);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Should_Send_Message_On_ServiceBusSender(
+            [Frozen] IServiceBusSenderProvider provider,
+            ServiceBusPublisher sut,
+            [Substitute] ServiceBusSender sender,
+            string topicName,
+            string messageBody,
+            IDictionary<string, string> properties,
+            TimeSpan timeToLive,
+            string sessionId,
+            CancellationToken cancellationToken)
+        {
+            provider
+                .GetSender(topicName)
+                .Returns(sender);
+
+            await sut.PublishAsync(
+                topicName,
+                sessionId,
+                messageBody,
+                properties,
+                timeToLive,
+                cancellationToken);
+
+            _ = sender
+                .Received(1)
+                .SendMessageAsync(
+                    Arg.Any<ServiceBusMessage>(),
+                    cancellationToken);
+
+            var message = sender
+                .ReceivedCallWithArgument<ServiceBusMessage>();
+
+            message.MessageId
+                .Should()
+                .NotBeNullOrEmpty();
+            message.Body
+                .ToString()
+                .Should()
+                .BeEquivalentTo(messageBody);
+            message.ApplicationProperties
+                .Should()
+                .BeEquivalentTo(properties);
+            message.TimeToLive
+               .Should()
+               .Be(timeToLive);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Should_Handle_Default_Parameters(
+            [Frozen] IServiceBusSenderProvider provider,
+            ServiceBusPublisher sut,
+            [Substitute] ServiceBusSender sender,
+            string topicName,
+            string messageBody,
+            string sessionId)
+        {
+            provider
+                .GetSender(topicName)
+                .Returns(sender);
+
+            await sut.PublishAsync(
+                topicName,
+                sessionId,
+                messageBody);
+
+            _ = sender
+                .Received(1)
+                .SendMessageAsync(
+                    Arg.Any<ServiceBusMessage>(),
+                    CancellationToken.None);
+
+            var message = sender
+                .ReceivedCallWithArgument<ServiceBusMessage>();
+
+            message.MessageId
+                .Should()
+                .NotBeNullOrEmpty();
+            message.SessionId
+                .Should()
+                .NotBeNullOrEmpty();
+            message.Body
+                .ToString()
+                .Should()
+                .BeEquivalentTo(messageBody);
+            message.ApplicationProperties
+                .Should()
+                .BeEmpty();
+            message.TimeToLive
+               .Should()
+               .Be(TimeSpan.MaxValue);
+        }
+    }
+}
