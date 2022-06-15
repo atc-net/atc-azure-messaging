@@ -74,4 +74,13 @@ public class EventHubPublisherTests
             .Should()
             .BeEquivalentTo(properties);
     }
+
+    [Theory, AutoNSubstituteData]
+    public async Task Disposes_EventHubProducerClient(
+        [Frozen, Substitute] EventHubProducerClient client,
+        EventHubPublisher sut)
+    {
+        await sut.DisposeAsync();
+        await client.Received(1).DisposeAsync();
+    }
 }
