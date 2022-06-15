@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Atc.Azure.Options" Version="3.0.14" />
     <PackageReference Include="Azure.Messaging.EventHubs" Version="5.7.0" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.8.1" />
   </ItemGroup>
 
 </Project>
