@@ -17,5 +17,5 @@ public sealed class ServiceBusSenderProvider : IServiceBusSenderProvider
     public ServiceBusSender GetSender(string topicName)
         => senders.GetOrAdd(
             topicName,
-            n => client.CreateSender(topicName));
+            topic => client.CreateSender(topic));
 }
