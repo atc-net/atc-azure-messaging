@@ -8,7 +8,7 @@ on:
       - reopened
 
 jobs:
-  dotnet-build:
+  dotnet-test:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -30,29 +30,66 @@ jobs:
       - name: 🔁 Restore packages
         run: dotnet restore
 
-      - name: 🛠️ Building library in release mode
-        run: dotnet build -c Release --no-restore
+      - name: 🧪 Run unit tests in release mode
+        run: dotnet test -c Release --no-restore
 
-  dotnet-test:
-    runs-on: ubuntu-latest
-    needs:
-      - dotnet-build
+  sonar-cloud:
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT_WORKFLOWS }}
+
+      - name: ⚙️ Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: 🧹 Clean
+        run: dotnet clean -c Release && dotnet nuget locals all --clear
+
+      - name: 🔁 Restore packages
+        run: dotnet restore
+
+      - name: 🌩️ SonarCloud install scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: 🌩️ SonarCloud Prepare
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: pwsh
+        run: |
+          dotnet-sonarscanner begin `
+              /k:"atc-azure-messaging" `
+              /o:"atc-net" `
+              /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
+              /d:sonar.host.url="https://sonarcloud.io" `
+              /d:sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
+
+      - name: 🛠️ Build
+        run: dotnet build -c Release --no-restore /p:UseSourceLink=true
+
+      - name: 🧪 Run unit tests
+        run: dotnet test -c Release --no-build --collect "Code coverage"
 
       - name: ⚙️ Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
 
-      - name: 🔁 Restore packages
-        run: dotnet restore
+      - name: Convert Code Coverage
+        continue-on-error: true
+        run: |
+          dotnet tool update dotnet-coverageconverter --global
+          dotnet-coverageconverter --CoverageFilesFolder . --ProcessAllFiles 
 
-      - name: 🛠️ Build
-        run: dotnet build -c Release --no-restore /p:UseSourceLink=true
-
-      - name: 🧪 Run unit tests
-        run: dotnet test -c Release --no-build
+      - name: 🌩️ SonarCloud analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: pwsh
+        run: |
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
