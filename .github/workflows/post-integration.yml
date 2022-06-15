@@ -72,8 +72,8 @@ jobs:
       - name: Convert Code Coverage
         continue-on-error: true
         run: |
-          dotnet tool update dotnet-coverageconverter --tool-path .tools\coverage
-          .\.tools\coverage\dotnet-coverageconverter.exe --CoverageFilesFolder . --ProcessAllFiles 
+          dotnet tool update dotnet-coverageconverter --global
+          dotnet-coverageconverter --CoverageFilesFolder . --ProcessAllFiles 
 
       - name: 🌩️ SonarCloud analyze
         env:
