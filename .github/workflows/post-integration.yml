@@ -70,7 +70,6 @@ jobs:
         run: dotnet test -c Release --no-build --collect "Code coverage"
 
       - name: Convert Code Coverage
-        working-directory: src
         continue-on-error: true
         run: |
           dotnet tool update dotnet-coverageconverter --tool-path .tools\coverage
