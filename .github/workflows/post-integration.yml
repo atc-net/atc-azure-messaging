@@ -46,14 +46,41 @@ jobs:
       - name: 🔁 Restore packages
         run: dotnet restore
 
+      - name: 🌩️ SonarCloud install scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: 🌩️ SonarCloud Prepare
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        working-directory: src
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin `
+              /k:"atc-azure-messaging" `
+              /o:"atc-net" `
+              /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
+              /d:sonar.host.url="https://sonarcloud.io" `
+              /d:sonar.cs.vstest.reportsPaths=**/*.trx `
+              /d:sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
+
       - name: 🛠️ Build
         run: dotnet build -c Release --no-restore /p:UseSourceLink=true
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c Release --no-build
+        run: dotnet test -c Release --no-build --collect "Code coverage"
 
-      - name: 🌩️ SonarCloud install scanner
-        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Setup .NET versions
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Convert Code Coverage
+        working-directory: src
+        continue-on-error: true
+        run: |
+          dotnet tool update dotnet-coverageconverter --tool-path .tools\coverage
+          .\.tools\coverage\dotnet-coverageconverter.exe --CoverageFilesFolder . --ProcessAllFiles 
 
       - name: 🌩️ SonarCloud analyze
         env:
@@ -61,8 +88,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          dotnet sonarscanner begin /k:"atc-azure-messaging" /o:"atc-net" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build -c Release /p:UseSourceLink=true --no-restore
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
       - name: ⏩ Merge to stable-branch
