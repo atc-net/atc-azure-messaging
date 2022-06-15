@@ -3,6 +3,8 @@ using Azure.Messaging.EventHubs.Producer;
 
 namespace Atc.Azure.Messaging.EventHub;
 
+#pragma warning disable CA2000 // Dispose objects before losing scope
+
 public class EventHubPublisherFactory : IEventHubPublisherFactory
 {
     private readonly string connectionString;

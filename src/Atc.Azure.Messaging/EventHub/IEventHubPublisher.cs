@@ -1,6 +1,6 @@
 ﻿namespace Atc.Azure.Messaging.EventHub;
 
-public interface IEventHubPublisher
+public interface IEventHubPublisher : IAsyncDisposable
 {
     Task PublishAsync(
         object message,

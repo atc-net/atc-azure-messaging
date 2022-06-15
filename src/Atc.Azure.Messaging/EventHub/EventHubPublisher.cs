@@ -5,7 +5,7 @@ using Azure.Messaging.EventHubs.Producer;
 
 namespace Atc.Azure.Messaging.EventHub;
 
-public class EventHubPublisher : IEventHubPublisher
+public sealed class EventHubPublisher : IEventHubPublisher
 {
     private readonly EventHubProducerClient client;
 
@@ -14,12 +14,12 @@ public class EventHubPublisher : IEventHubPublisher
         this.client = client;
     }
 
-    public async Task PublishAsync(
+    public Task PublishAsync(
         object message,
         IDictionary<string, string> messageProperties,
         CancellationToken cancellationToken = default)
     {
-        await PerformPublishAsync(
+        return PerformPublishAsync(
             JsonSerializer.Serialize(message),
             messageProperties,
             cancellationToken);
@@ -47,4 +47,6 @@ public class EventHubPublisher : IEventHubPublisher
             },
             cancellationToken);
     }
+
+    public ValueTask DisposeAsync() => client.DisposeAsync();
 }

@@ -12,5 +12,5 @@ public class ServiceBusClientFactory : IServiceBusClientFactory
         this.options = options;
     }
 
-    public ServiceBusClient Create() => new(options.ConnectionString);
+    public ServiceBusClient Create() => new (options.ConnectionString);
 }

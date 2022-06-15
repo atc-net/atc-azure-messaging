@@ -11,7 +11,7 @@ public class ServiceBusPublisher : IServiceBusPublisher
         this.clientProvider = clientProvider;
     }
 
-    public async Task PublishAsync(
+    public Task PublishAsync(
         string topicOrQueue,
         string sessionId,
         string messageBody,
@@ -19,7 +19,7 @@ public class ServiceBusPublisher : IServiceBusPublisher
         TimeSpan? timeToLive = null,
         CancellationToken cancellationToken = default)
     {
-        await PerformPublishAsync(
+        return PerformPublishAsync(
             topicOrQueue,
             sessionId,
             messageBody,
