@@ -55,13 +55,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          dotnet sonarscanner begin `
+          dotnet-sonarscanner begin `
               /k:"atc-azure-messaging" `
               /o:"atc-net" `
               /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
               /d:sonar.host.url="https://sonarcloud.io" `
-              /d:sonar.cs.vstest.reportsPaths=./test/**/*.trx `
-              /d:sonar.cs.vscoveragexml.reportsPaths=./test/**/*.coveragexml
+              /d:sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
 
       - name: 🛠️ Build
         run: dotnet build -c Release --no-restore /p:UseSourceLink=true
@@ -81,7 +80,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
       - name: ⏩ Merge to stable-branch
         run: |
