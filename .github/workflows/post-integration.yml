@@ -30,11 +30,6 @@ jobs:
         with:
           setAllVars: true
 
-      - name: ⚙️ Setup dotnet 6.0.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-
       - name: ⚙️ Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -67,6 +62,11 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: dotnet test -c Release --no-build --collect "Code coverage"
+
+      - name: ⚙️ Setup dotnet 6.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
 
       - name: Convert Code Coverage
         continue-on-error: true
