@@ -60,8 +60,8 @@ jobs:
               /o:"atc-net" `
               /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
               /d:sonar.host.url="https://sonarcloud.io" `
-              /d:sonar.cs.vstest.reportsPaths=**/*.trx `
-              /d:sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
+              /d:sonar.cs.vstest.reportsPaths=./**/*.trx `
+              /d:sonar.cs.vscoveragexml.reportsPaths=./**/*.coveragexml
 
       - name: 🛠️ Build
         run: dotnet build -c Release --no-restore /p:UseSourceLink=true
