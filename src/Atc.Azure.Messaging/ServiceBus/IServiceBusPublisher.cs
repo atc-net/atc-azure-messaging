@@ -4,8 +4,8 @@ public interface IServiceBusPublisher
 {
     Task PublishAsync(
         string topicOrQueue,
-        string sessionId,
-        string messageBody,
+        object message,
+        string? sessionId = null,
         IDictionary<string, string>? properties = null,
         TimeSpan? timeToLive = null,
         CancellationToken cancellationToken = default);

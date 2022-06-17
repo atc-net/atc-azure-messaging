@@ -1,6 +1,7 @@
 using Atc.Azure.Messaging.ServiceBus;
 using AutoFixture.AutoNSubstitute;
 using Azure.Messaging.ServiceBus;
+using System.Text.Json;
 
 namespace Atc.Azure.Messaging.Tests.ServiceBus
 {
@@ -12,7 +13,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
             ServiceBusPublisher sut,
             [Substitute] ServiceBusSender sender,
             string topicName,
-            string messageBody,
+            object messageBody,
             IDictionary<string, string> properties,
             TimeSpan timeToLive,
             string sessionId,
@@ -24,8 +25,8 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
 
             await sut.PublishAsync(
                 topicName,
-                sessionId,
                 messageBody,
+                sessionId,
                 properties,
                 timeToLive,
                 cancellationToken);
@@ -41,7 +42,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
             ServiceBusPublisher sut,
             [Substitute] ServiceBusSender sender,
             string topicName,
-            string messageBody,
+            object messageBody,
             IDictionary<string, string> properties,
             TimeSpan timeToLive,
             string sessionId,
@@ -53,8 +54,8 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
 
             await sut.PublishAsync(
                 topicName,
-                sessionId,
                 messageBody,
+                sessionId,
                 properties,
                 timeToLive,
                 cancellationToken);
@@ -74,7 +75,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
             message.Body
                 .ToString()
                 .Should()
-                .BeEquivalentTo(messageBody);
+                .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
             message.ApplicationProperties
                 .Should()
                 .BeEquivalentTo(properties);
@@ -89,7 +90,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
             ServiceBusPublisher sut,
             [Substitute] ServiceBusSender sender,
             string topicName,
-            string messageBody,
+            object messageBody,
             string sessionId)
         {
             provider
@@ -98,8 +99,8 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
 
             await sut.PublishAsync(
                 topicName,
-                sessionId,
-                messageBody);
+                messageBody,
+                sessionId);
 
             _ = sender
                 .Received(1)
@@ -119,7 +120,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
             message.Body
                 .ToString()
                 .Should()
-                .BeEquivalentTo(messageBody);
+                .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
             message.ApplicationProperties
                 .Should()
                 .BeEmpty();

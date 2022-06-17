@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Azure.Messaging.ServiceBus;
 
 namespace Atc.Azure.Messaging.ServiceBus;
@@ -13,42 +14,25 @@ public class ServiceBusPublisher : IServiceBusPublisher
 
     public Task PublishAsync(
         string topicOrQueue,
-        string sessionId,
-        string messageBody,
+        object message,
+        string? sessionId = null,
         IDictionary<string, string>? properties = null,
         TimeSpan? timeToLive = null,
         CancellationToken cancellationToken = default)
     {
-        return PerformPublishAsync(
-            topicOrQueue,
-            sessionId,
-            messageBody,
-            properties,
-            timeToLive,
-            cancellationToken);
-    }
-
-    private Task PerformPublishAsync(
-        string topicOrQueue,
-        string sessionId,
-        string messageBody,
-        IDictionary<string, string>? properties,
-        TimeSpan? timeToLive,
-        CancellationToken cancellationToken)
-    {
-        var message = CreateServiceBusMessage(
-            sessionId,
-            messageBody,
-            properties,
-            timeToLive);
-
         return clientProvider
             .GetSender(topicOrQueue)
-            .SendMessageAsync(message, cancellationToken);
+            .SendMessageAsync(
+                CreateServiceBusMessage(
+                    sessionId,
+                    JsonSerializer.Serialize(message),
+                    properties,
+                    timeToLive),
+                cancellationToken);
     }
 
     private static ServiceBusMessage CreateServiceBusMessage(
-        string sessionId,
+        string? sessionId,
         string messageBody,
         IDictionary<string, string>? properties,
         TimeSpan? timeToLive)
@@ -56,7 +40,7 @@ public class ServiceBusPublisher : IServiceBusPublisher
         var message = new ServiceBusMessage(messageBody)
         {
             MessageId = Guid.NewGuid().ToString(),
-            SessionId = sessionId,
+            SessionId = sessionId ?? Guid.NewGuid().ToString(),
         };
 
         if (timeToLive != null)
