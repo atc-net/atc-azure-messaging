@@ -1,3 +1,8 @@
+#pragma warning disable MA0048 // File name must match type name
+#pragma warning disable SA1649 // File name should match first type name
+#pragma warning disable MA0047 // Declare types in namespaces
+#pragma warning disable S3903 // Types should be defined in named namespaces
+
 using Atc.Azure.Messaging.EventHub;
 using Atc.Azure.Messaging.ServiceBus;
 
@@ -23,11 +28,7 @@ app.MapPost(
 
 app.Run();
 
-#pragma warning disable MA0048 // File name must match type name
-#pragma warning disable SA1649 // File name should match first type name
-#pragma warning disable MA0047 // Declare types in namespaces
-#pragma warning disable S3903 // Types should be defined in named namespaces
-
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal class SendDataHandler
 {
     private readonly IEventHubPublisher eventHubPublisher;
@@ -55,6 +56,11 @@ internal class SendDataHandler
     }
 }
 
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal record Request(string A, string B, string C);
 
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal record Response(string Id, string A, string B, string C);
+
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public static partial class Program { }
