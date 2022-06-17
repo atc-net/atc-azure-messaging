@@ -349,3 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 .idea/
+sample/SampleApi/appsettings.Development.json
+Atc.Azure.Messaging.lutconfig
