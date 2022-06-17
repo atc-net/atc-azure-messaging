@@ -4,6 +4,6 @@ public interface IEventHubPublisher : IAsyncDisposable
 {
     Task PublishAsync(
         object message,
-        IDictionary<string, string> messageProperties,
+        IDictionary<string, string>? messageProperties = null,
         CancellationToken cancellationToken = default);
 }

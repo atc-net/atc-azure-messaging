@@ -16,7 +16,7 @@ public sealed class EventHubPublisher : IEventHubPublisher
 
     public Task PublishAsync(
         object message,
-        IDictionary<string, string> messageProperties,
+        IDictionary<string, string>? messageProperties = null,
         CancellationToken cancellationToken = default)
     {
         return PerformPublishAsync(
@@ -27,17 +27,20 @@ public sealed class EventHubPublisher : IEventHubPublisher
 
     private Task PerformPublishAsync(
         string messageBody,
-        IDictionary<string, string> messageProperties,
-        CancellationToken cancellationToken)
+        IDictionary<string, string>? messageProperties = null,
+        CancellationToken cancellationToken = default)
     {
         var eventBody = Encoding.UTF8.GetBytes(messageBody);
         var eventData = new EventData(eventBody);
 
-        foreach (var property in messageProperties)
+        if (messageProperties != null)
         {
-            eventData.Properties.Add(
-                property.Key,
-                property.Value);
+            foreach (var property in messageProperties)
+            {
+                eventData.Properties.Add(
+                    property.Key,
+                    property.Value);
+            }
         }
 
         return client.SendAsync(
