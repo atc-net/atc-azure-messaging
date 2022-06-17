@@ -52,14 +52,7 @@ internal class FooPublisher
     }
 
     public Task Publish(object message)
-        => publisher
-            .PublishAsync(
-                bar,
-                new Dictionary<string, string> 
-                {
-                    {"messageType", nameof(message)}
-                }
-            )
+        => publisher.PublishAsync(message);
 }
 ```
 
@@ -78,17 +71,16 @@ internal class BarPublisher
     }
 
     public Task Publish(object message)
-        => publisher
-            .PublishAsync(
-                "[existing servicebus topic]",
-                "[session id or nothing]",
-                JsonSerializer.Serialize(message));
+        => publisher.PublishAsync("[existing servicebus topic]", message);
 }
 ```
 
 Here's a full example of how to use the publishers above using a Minimal API setup (SwaggerUI enabled) with a single endpoint called `POST /data` that accepts a simple request body `{ "a": "string", "b": "string", "c": "string" }` which publishes the request to an EventHub and a ServiceBus topic
 
 ```csharp
+using Atc.Azure.Messaging.EventHub;
+using Atc.Azure.Messaging.ServiceBus;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -111,6 +103,11 @@ app.MapPost(
 
 app.Run();
 
+#pragma warning disable MA0048 // File name must match type name
+#pragma warning disable SA1649 // File name should match first type name
+#pragma warning disable MA0047 // Declare types in namespaces
+#pragma warning disable S3903 // Types should be defined in named namespaces
+
 internal class SendDataHandler
 {
     private readonly IEventHubPublisher eventHubPublisher;
@@ -120,25 +117,15 @@ internal class SendDataHandler
         IEventHubPublisherFactory eventHubFactory,
         IServiceBusPublisher serviceBusPublisher)
     {
-        eventHubPublisher = eventHubFactory.Create("[existing eventhub]");
+        eventHubPublisher = eventHubFactory.Create("[existing eventhub");
         this.serviceBusPublisher = serviceBusPublisher;
     }
 
     public async Task<Response> Post(Request request)
     {
-        await eventHubPublisher
-            .PublishAsync(
-                request,
-                new Dictionary<string, string>(StringComparer.Ordinal)
-                {
-                    { "MessageType", "example" },
-                });
+        await eventHubPublisher.PublishAsync(request);
 
-        await serviceBusPublisher
-            .PublishAsync(
-                "[existing topic|queue",
-                "[session id or nothing]",
-                System.Text.Json.JsonSerializer.Serialize(request));
+        await serviceBusPublisher.PublishAsync("existing topic|queue", request);
 
         return new Response(
             Guid.NewGuid().ToString("N"),
