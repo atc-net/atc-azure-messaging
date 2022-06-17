@@ -1,7 +1,7 @@
+using System.Text.Json;
 using Atc.Azure.Messaging.ServiceBus;
 using AutoFixture.AutoNSubstitute;
 using Azure.Messaging.ServiceBus;
-using System.Text.Json;
 
 namespace Atc.Azure.Messaging.Tests.ServiceBus
 {
