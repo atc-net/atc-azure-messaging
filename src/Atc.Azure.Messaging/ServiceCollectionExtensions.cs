@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IEventHubPublisherFactory, EventHubPublisherFactory>();
         services.AddSingleton<IServiceBusClientFactory, ServiceBusClientFactory>();
         services.AddSingleton<IServiceBusSenderProvider, ServiceBusSenderProvider>();
+        services.AddSingleton<IServiceBusPublisher, ServiceBusPublisher>();
     }
 
     private static T AddOptions<T>(
