@@ -1,4 +1,6 @@
+using System.Text.Json;
 using Atc.Azure.Messaging.EventHub;
+using Atc.Azure.Messaging.ServiceBus;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -29,22 +31,32 @@ app.Run();
 
 internal class SendDataHandler
 {
-    private readonly IEventHubPublisher publisher;
+    private readonly IEventHubPublisher eventHubPublisher;
+    private readonly IServiceBusPublisher serviceBusPublisher;
 
-    public SendDataHandler(IEventHubPublisherFactory factory)
+    public SendDataHandler(
+        IEventHubPublisherFactory eventHubFactory,
+        IServiceBusPublisher serviceBusPublisher)
     {
-        publisher = factory.Create("ocpi");
+        eventHubPublisher = eventHubFactory.Create("[existing eventhub]");
+        this.serviceBusPublisher = serviceBusPublisher;
     }
 
     public async Task<Response> Post(Request request)
     {
-        await publisher
+        await eventHubPublisher
             .PublishAsync(
                 request,
                 new Dictionary<string, string>(StringComparer.Ordinal)
                 {
                     { "MessageType", "example" },
                 });
+
+        await serviceBusPublisher
+            .PublishAsync(
+                "[existing topic|queue",
+                "[session id or nothing]",
+                JsonSerializer.Serialize(request));
 
         return new Response(
             Guid.NewGuid().ToString("N"),
