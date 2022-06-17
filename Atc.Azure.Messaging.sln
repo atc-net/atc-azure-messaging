@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Azure.Messaging", "src\Atc.Azure.Messaging\Atc.Azure.Messaging.csproj", "{2F7702F2-A407-41FB-8C88-7C066237BC75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.Azure.Messaging.Tests", "test\Atc.Azure.Messaging.Tests\Atc.Azure.Messaging.Tests.csproj", "{0C49EE44-DAE3-4A7C-9D2D-D1190CAC85F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Azure.Messaging.Tests", "test\Atc.Azure.Messaging.Tests\Atc.Azure.Messaging.Tests.csproj", "{0C49EE44-DAE3-4A7C-9D2D-D1190CAC85F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{80664A26-621B-4C22-B341-44EB3CA66724}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApi", "sample\SampleApi\SampleApi.csproj", "{FEFE9828-0DA9-4C88-8D45-416D889012B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,16 @@ Global
 		{0C49EE44-DAE3-4A7C-9D2D-D1190CAC85F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C49EE44-DAE3-4A7C-9D2D-D1190CAC85F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C49EE44-DAE3-4A7C-9D2D-D1190CAC85F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEFE9828-0DA9-4C88-8D45-416D889012B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEFE9828-0DA9-4C88-8D45-416D889012B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEFE9828-0DA9-4C88-8D45-416D889012B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEFE9828-0DA9-4C88-8D45-416D889012B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FEFE9828-0DA9-4C88-8D45-416D889012B6} = {80664A26-621B-4C22-B341-44EB3CA66724}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EC093F7-1E03-4088-BA72-0DEB39AFEE82}
