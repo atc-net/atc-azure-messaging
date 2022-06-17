@@ -5,6 +5,8 @@
     <PackageId>Atc.Azure.Messaging</PackageId>
     <PackageTags>azure;eventhubs;servicebus</PackageTags>
 	  <Description>A component library for publishing messages on Azure Event Hubs and Service Bus.</Description>
+    <PackageProjectUrl>https://github.com/atc-net/atc-azure-messaging/blob/main/README.md</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/atc-net/atc-azure-messaging</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
