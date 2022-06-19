@@ -48,7 +48,7 @@ internal class FooPublisher
 
     public FooPublisher(IEventHubPublisherFactory factory)
     {
-        publisher = factory.Create([existing eventhub name]);
+        publisher = factory.Create("[existing eventhub name]");
     }
 
     public Task Publish(object message)
@@ -102,11 +102,6 @@ app.MapPost(
     (Request request, SendDataHandler handler) => handler.Post(request));
 
 app.Run();
-
-#pragma warning disable MA0048 // File name must match type name
-#pragma warning disable SA1649 // File name should match first type name
-#pragma warning disable MA0047 // Declare types in namespaces
-#pragma warning disable S3903 // Types should be defined in named namespaces
 
 internal class SendDataHandler
 {
