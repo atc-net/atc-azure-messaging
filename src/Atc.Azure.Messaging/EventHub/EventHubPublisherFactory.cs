@@ -15,8 +15,8 @@ public class EventHubPublisherFactory : IEventHubPublisherFactory
     }
 
     public IEventHubPublisher Create(string eventHubName)
-        => new EventHubPublisher(
-            new EventHubProducerClient(
-                connectionString,
-                eventHubName));
+        => new EventHubPublisher(CreateEventHubProducerClient(eventHubName));
+
+    public EventHubProducerClient CreateEventHubProducerClient(string eventHubName)
+        => new EventHubProducerClient(connectionString, eventHubName);
 }

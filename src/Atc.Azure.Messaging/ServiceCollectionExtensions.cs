@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Atc.Azure.Messaging.EventHub;
 using Atc.Azure.Messaging.ServiceBus;
 using Atc.Azure.Options.EventHub;
@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 [ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
-    public static void ConfigureMessagingServices(
+    public static IServiceCollection ConfigureMessagingServices(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -21,6 +21,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IServiceBusClientFactory, ServiceBusClientFactory>();
         services.AddSingleton<IServiceBusSenderProvider, ServiceBusSenderProvider>();
         services.AddSingleton<IServiceBusPublisher, ServiceBusPublisher>();
+
+        return services;
     }
 
     private static T AddOptions<T>(
