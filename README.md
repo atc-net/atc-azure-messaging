@@ -112,7 +112,7 @@ internal class SendDataHandler
         IEventHubPublisherFactory eventHubFactory,
         IServiceBusPublisher serviceBusPublisher)
     {
-        eventHubPublisher = eventHubFactory.Create("[existing eventhub");
+        eventHubPublisher = eventHubFactory.Create("[existing eventhub]");
         this.serviceBusPublisher = serviceBusPublisher;
     }
 
