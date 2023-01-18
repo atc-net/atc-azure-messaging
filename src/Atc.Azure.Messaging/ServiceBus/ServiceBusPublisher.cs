@@ -1,6 +1,3 @@
-using System.Text.Json;
-using Azure.Messaging.ServiceBus;
-
 namespace Atc.Azure.Messaging.ServiceBus;
 
 internal sealed class ServiceBusPublisher : IServiceBusPublisher

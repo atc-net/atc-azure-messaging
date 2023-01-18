@@ -1,9 +1,3 @@
-using Atc.Azure.Messaging.EventHub;
-using Atc.Azure.Options.Authorization;
-using Atc.Azure.Options.Environment;
-using Atc.Azure.Options.EventHub;
-using Atc.Azure.Options.Providers;
-
 namespace Atc.Azure.Messaging.Tests.EventHub;
 
 public class EventHubCredentialsPublisherFactoryTests

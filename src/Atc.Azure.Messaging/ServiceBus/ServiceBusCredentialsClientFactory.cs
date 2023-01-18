@@ -1,10 +1,3 @@
-using Atc.Azure.Options.Authorization;
-using Atc.Azure.Options.Environment;
-using Atc.Azure.Options.Providers;
-using Atc.Azure.Options.ServiceBus;
-using Azure.Identity;
-using Azure.Messaging.ServiceBus;
-
 namespace Atc.Azure.Messaging.ServiceBus;
 
 internal sealed class ServiceBusCredentialsClientFactory : IServiceBusClientFactory

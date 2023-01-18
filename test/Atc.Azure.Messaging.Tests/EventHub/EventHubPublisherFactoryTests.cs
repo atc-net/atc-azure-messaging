@@ -1,6 +1,3 @@
-using Atc.Azure.Messaging.EventHub;
-using Atc.Azure.Options.EventHub;
-
 namespace Atc.Azure.Messaging.Tests.EventHub;
 
 public class EventHubPublisherFactoryTests

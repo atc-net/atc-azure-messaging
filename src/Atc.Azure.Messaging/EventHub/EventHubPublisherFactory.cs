@@ -1,7 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Atc.Azure.Options.EventHub;
-using Azure.Messaging.EventHubs.Producer;
-
 namespace Atc.Azure.Messaging.EventHub;
 
 [SuppressMessage(

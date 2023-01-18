@@ -1,11 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Atc.Azure.Options.Authorization;
-using Atc.Azure.Options.Environment;
-using Atc.Azure.Options.EventHub;
-using Atc.Azure.Options.Providers;
-using Azure.Identity;
-using Azure.Messaging.EventHubs.Producer;
-
 namespace Atc.Azure.Messaging.EventHub;
 
 [SuppressMessage(

@@ -1,6 +1,3 @@
-using Atc.Azure.Options.ServiceBus;
-using Azure.Messaging.ServiceBus;
-
 namespace Atc.Azure.Messaging.ServiceBus;
 
 internal sealed class ServiceBusClientFactory : IServiceBusClientFactory

@@ -1,7 +1,4 @@
-﻿using Atc.Azure.Messaging.ServiceBus;
-using Atc.Azure.Options.ServiceBus;
-
-namespace Atc.Azure.Messaging.Tests.ServiceBus;
+﻿namespace Atc.Azure.Messaging.Tests.ServiceBus;
 
 public class ServiceBusClientFactoryTests
 {
