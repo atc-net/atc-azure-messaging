@@ -37,6 +37,46 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureMessagingServices(builder.Configuration);
 ```
 
+## Connecting with Managed Identity
+
+When connecting with Managed Identity you need to setup your configuration accordingly.
+
+The following is an example of how you would configure your EventHub or ServiceBus with Managed Identity for [ATC Azure Options](https://github.com/atc-net/atc-azure-options)
+
+```json
+{  
+  "EventHubOptions": {
+    "FullyQualifiedNamespace": "[your eventhub namespace].servicebus.windows.net"
+  },
+  "ServiceBusOptions": {
+    "FullyQualifiedNamespace": "[your servicebus namespace].servicebus.windows.net"
+  },
+  "ClientAuthorizationOptions": {
+    "TenantId": "[your tenant id]"
+  },
+  "EnvironmentOptions": {
+    "EnvironmentType": "[Local/DevTest/Production]"
+  }
+}
+```
+
+It is important that the logged-in user/application has the `Azure Service Bus Data Sender` or `Azure Service Bus Data Owner` build-in role for [ServiceBus](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-managed-service-identity#azure-built-in-roles-for-azure-service-bus).
+
+And the corresponding `Azure Event Hubs Data Sender` or `Azure Event Hubs Data Owner` build-in roles for [Eventhubs](https://learn.microsoft.com/en-us/azure/event-hubs/authenticate-application#built-in-roles-for-azure-event-hubs)
+
+The dependencies are registered using `ConfigureMessagingServices(IConfiguration, bool)` for the default implementation of [IAzureCredentialOptionsProvider](https://github.com/atc-net/atc-azure-options/blob/main/src/Atc.Azure.Options/Providers/AzureCredentialOptionsProvider.cs) and `ConfigureMessagingServices(IConfiguration, bool, IAzureCredentialOptionsProvider)` if you wish to use your own implementation of `IAzureCredentialOptionsProvider`.
+
+Here's an example of the default implementation using a Minimal API setup
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Register Atc.Azure.Messaging dependencies
+builder.Services.ConfigureMessagingServices(builder.Configuration, true);
+```
+
 ## Publishing to EventHub
 
 To publish events to an EventHub you need an instance of `IEventHubPublisher`, this can be constructed via the `IEventHubPublisherFactory` which exposes the `Create(string eventHubName)` method
