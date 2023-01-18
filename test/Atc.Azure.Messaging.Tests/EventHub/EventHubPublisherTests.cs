@@ -10,7 +10,7 @@ namespace Atc.Azure.Messaging.Tests.EventHub;
 public class EventHubPublisherTests
 {
     [Theory, AutoNSubstituteData]
-    public async Task PublishAsync_Calls_Client(
+    internal async Task PublishAsync_Calls_Client(
         [Frozen, Substitute] EventHubProducerClient client,
         EventHubPublisher sut,
         object messageBody,
@@ -30,7 +30,7 @@ public class EventHubPublisherTests
     }
 
     [Theory, AutoNSubstituteData]
-    public async Task PublishAsync_Calls_Client_With_Correct_MessageBody(
+    internal async Task PublishAsync_Calls_Client_With_Correct_MessageBody(
         [Frozen, Substitute] EventHubProducerClient client,
         EventHubPublisher sut,
         object messageBody,
@@ -54,7 +54,7 @@ public class EventHubPublisherTests
     }
 
     [Theory, AutoNSubstituteData]
-    public async Task PublishAsync_Calls_Client_With_Correct_Properties(
+    internal async Task PublishAsync_Calls_Client_With_Correct_Properties(
         [Frozen, Substitute] EventHubProducerClient client,
         EventHubPublisher sut,
         object messageBody,
@@ -76,7 +76,7 @@ public class EventHubPublisherTests
     }
 
     [Theory, AutoNSubstituteData]
-    public async Task Disposes_EventHubProducerClient(
+    internal async Task Disposes_EventHubProducerClient(
         [Frozen, Substitute] EventHubProducerClient client,
         EventHubPublisher sut)
     {

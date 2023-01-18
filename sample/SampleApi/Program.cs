@@ -12,7 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<SendDataHandler>();
 
 // Register Atc.Azure.Messaging dependencies
-builder.Services.ConfigureMessagingServices(builder.Configuration);
+var useManagedIdentity = false;
+builder.Services.ConfigureMessagingServices(builder.Configuration, useManagedIdentity);
 
 var app = builder.Build();
 app.UseHttpsRedirection();
@@ -38,15 +39,14 @@ internal class SendDataHandler
         IEventHubPublisherFactory eventHubFactory,
         IServiceBusPublisher serviceBusPublisher)
     {
-        eventHubPublisher = eventHubFactory.Create("[existing eventhub");
+        eventHubPublisher = eventHubFactory.Create("[existing eventhub]");
         this.serviceBusPublisher = serviceBusPublisher;
     }
 
     public async Task<Response> Post(Request request)
     {
         await eventHubPublisher.PublishAsync(request);
-
-        await serviceBusPublisher.PublishAsync("existing topic|queue", request);
+        await serviceBusPublisher.PublishAsync("[existing topic|queue]", request);
 
         return new Response(
             Guid.NewGuid().ToString("N"),

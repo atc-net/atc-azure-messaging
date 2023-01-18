@@ -8,7 +8,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
     public class ServiceBusPublisherTests
     {
         [Theory, AutoNSubstituteData]
-        public async Task Should_Get_ServiceBusSender_For_Topic(
+        internal async Task Should_Get_ServiceBusSender_For_Topic(
             [Frozen] IServiceBusSenderProvider provider,
             ServiceBusPublisher sut,
             [Substitute] ServiceBusSender sender,
@@ -37,7 +37,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
         }
 
         [Theory, AutoNSubstituteData]
-        public async Task Should_Send_Message_On_ServiceBusSender(
+        internal async Task Should_Send_Message_On_ServiceBusSender(
             [Frozen] IServiceBusSenderProvider provider,
             ServiceBusPublisher sut,
             [Substitute] ServiceBusSender sender,
@@ -85,7 +85,7 @@ namespace Atc.Azure.Messaging.Tests.ServiceBus
         }
 
         [Theory, AutoNSubstituteData]
-        public async Task Should_Handle_Default_Parameters(
+        internal async Task Should_Handle_Default_Parameters(
             [Frozen] IServiceBusSenderProvider provider,
             ServiceBusPublisher sut,
             [Substitute] ServiceBusSender sender,

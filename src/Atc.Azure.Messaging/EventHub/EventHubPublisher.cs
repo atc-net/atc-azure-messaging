@@ -5,7 +5,7 @@ using Azure.Messaging.EventHubs.Producer;
 
 namespace Atc.Azure.Messaging.EventHub;
 
-public sealed class EventHubPublisher : IEventHubPublisher
+internal sealed class EventHubPublisher : IEventHubPublisher
 {
     private readonly EventHubProducerClient client;
 

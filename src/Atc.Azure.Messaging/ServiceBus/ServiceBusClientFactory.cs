@@ -3,7 +3,7 @@ using Azure.Messaging.ServiceBus;
 
 namespace Atc.Azure.Messaging.ServiceBus;
 
-public class ServiceBusClientFactory : IServiceBusClientFactory
+internal sealed class ServiceBusClientFactory : IServiceBusClientFactory
 {
     private readonly ServiceBusOptions options;
 
@@ -12,5 +12,5 @@ public class ServiceBusClientFactory : IServiceBusClientFactory
         this.options = options;
     }
 
-    public ServiceBusClient Create() => new (options.ConnectionString);
+    public ServiceBusClient Create() => new ServiceBusClient(options.ConnectionString);
 }
