@@ -2,7 +2,7 @@ using Azure.Messaging.ServiceBus;
 
 namespace Atc.Azure.Messaging.ServiceBus;
 
-public interface IServiceBusSenderProvider
+internal interface IServiceBusSenderProvider
 {
     ServiceBusSender GetSender(string topicName);
 }

@@ -507,3 +507,4 @@ dotnet_diagnostic.CA1062.severity = none            # Do not demand null-checkin
 dotnet_diagnostic.SA1011.severity = none            # Space needed after closing square bracet "]" needed for nullable arrays
 dotnet_diagnostic.SA1401.severity = none			# Field should be private
 dotnet_diagnostic.CA1051.severity = none			# Do not declare visible instance fields
+dotnet_diagnostic.CA1812.severity = none			# Internal classes are instantiated by IoC

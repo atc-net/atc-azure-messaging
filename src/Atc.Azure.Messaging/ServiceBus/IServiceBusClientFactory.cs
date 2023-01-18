@@ -1,8 +1,8 @@
-﻿using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus;
 
 namespace Atc.Azure.Messaging.ServiceBus;
 
-public interface IServiceBusClientFactory
+internal interface IServiceBusClientFactory
 {
     ServiceBusClient Create();
 }

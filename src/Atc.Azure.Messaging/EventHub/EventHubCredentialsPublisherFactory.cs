@@ -12,7 +12,7 @@ namespace Atc.Azure.Messaging.EventHub;
     "Reliability",
     "CA2000:Dispose objects before losing scope",
     Justification = "EventHubPublisher is responsible for disposing EventHubProducerClient")]
-public class EventHubCredentialsPublisherFactory : IEventHubPublisherFactory
+internal sealed class EventHubCredentialsPublisherFactory : IEventHubPublisherFactory
 {
     private readonly string fullyQualifiedNamespace;
     private readonly DefaultAzureCredentialOptions credentialOptions;

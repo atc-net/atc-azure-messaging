@@ -7,7 +7,7 @@ using Azure.Messaging.ServiceBus;
 
 namespace Atc.Azure.Messaging.ServiceBus;
 
-public class ServiceBusCredentialsClientFactory : IServiceBusClientFactory
+internal sealed class ServiceBusCredentialsClientFactory : IServiceBusClientFactory
 {
     private readonly string fullyQualifiedNamespace;
     private readonly DefaultAzureCredentialOptions credentialOptions;

@@ -3,7 +3,7 @@ using Azure.Messaging.ServiceBus;
 
 namespace Atc.Azure.Messaging.ServiceBus;
 
-public class ServiceBusPublisher : IServiceBusPublisher
+internal sealed class ServiceBusPublisher : IServiceBusPublisher
 {
     private readonly IServiceBusSenderProvider clientProvider;
 

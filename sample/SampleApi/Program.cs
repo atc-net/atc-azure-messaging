@@ -12,7 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<SendDataHandler>();
 
 // Register Atc.Azure.Messaging dependencies
-builder.Services.ConfigureMessagingServices(builder.Configuration); // ConfigureMessagingServices(builder.Configuration, true)
+var useManagedIdentity = false;
+builder.Services.ConfigureMessagingServices(builder.Configuration, useManagedIdentity);
 
 var app = builder.Build();
 app.UseHttpsRedirection();
