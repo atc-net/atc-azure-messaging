@@ -1,6 +1,3 @@
-using System.Collections.Concurrent;
-using Azure.Messaging.ServiceBus;
-
 namespace Atc.Azure.Messaging.ServiceBus;
 
 internal sealed class ServiceBusSenderProvider : IServiceBusSenderProvider

@@ -1,15 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Atc.Azure.Messaging.EventHub;
-using Atc.Azure.Messaging.ServiceBus;
-using Atc.Azure.Options.Authorization;
-using Atc.Azure.Options.Environment;
-using Atc.Azure.Options.EventHub;
-using Atc.Azure.Options.Providers;
-using Atc.Azure.Options.ServiceBus;
-using Azure.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
 namespace Microsoft.Extensions.DependencyInjection;
 
 [ExcludeFromCodeCoverage]

@@ -1,8 +1,3 @@
-using System.Text;
-using System.Text.Json;
-using Azure.Messaging.EventHubs;
-using Azure.Messaging.EventHubs.Producer;
-
 namespace Atc.Azure.Messaging.EventHub;
 
 internal sealed class EventHubPublisher : IEventHubPublisher

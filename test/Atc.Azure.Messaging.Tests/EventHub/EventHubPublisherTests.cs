@@ -1,10 +1,3 @@
-using System.Text;
-using System.Text.Json;
-using Atc.Azure.Messaging.EventHub;
-using AutoFixture.AutoNSubstitute;
-using Azure.Messaging.EventHubs;
-using Azure.Messaging.EventHubs.Producer;
-
 namespace Atc.Azure.Messaging.Tests.EventHub;
 
 public class EventHubPublisherTests

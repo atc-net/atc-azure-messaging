@@ -1,9 +1,3 @@
-using Atc.Azure.Messaging.EventHub;
-using Atc.Azure.Messaging.ServiceBus;
-using Atc.Azure.Options.Providers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Atc.Azure.Messaging.Tests;
 
 public class ServiceCollectionExtensionsTests
