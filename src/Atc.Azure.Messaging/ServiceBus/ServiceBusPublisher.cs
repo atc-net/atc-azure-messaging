@@ -28,6 +28,39 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
                 cancellationToken);
     }
 
+    public Task<long> SchedulePublishAsync(
+        string topicOrQueue,
+        object message,
+        DateTimeOffset scheduledEnqueueTime,
+        string? sessionId = null,
+        IDictionary<string, string>? properties = null,
+        TimeSpan? timeToLive = null,
+        CancellationToken cancellationToken = default)
+    {
+        return clientProvider
+            .GetSender(topicOrQueue)
+            .ScheduleMessageAsync(
+                CreateServiceBusMessage(
+                    sessionId,
+                    JsonSerializer.Serialize(message),
+                    properties,
+                    timeToLive),
+                scheduledEnqueueTime,
+                cancellationToken);
+    }
+
+    public Task DeschedulePublishAsync(
+        string topicOrQueue,
+        long sequenceNumber,
+        CancellationToken cancellationToken = default)
+    {
+        return clientProvider
+            .GetSender(topicOrQueue)
+            .CancelScheduledMessageAsync(
+                sequenceNumber,
+                cancellationToken);
+    }
+
     private static ServiceBusMessage CreateServiceBusMessage(
         string? sessionId,
         string messageBody,
