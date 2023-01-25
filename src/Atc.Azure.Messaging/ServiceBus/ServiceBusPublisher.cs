@@ -49,7 +49,7 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
                 cancellationToken);
     }
 
-    public Task DeschedulePublishAsync(
+    public Task CancelScheduledPublishAsync(
         string topicOrQueue,
         long sequenceNumber,
         CancellationToken cancellationToken = default)

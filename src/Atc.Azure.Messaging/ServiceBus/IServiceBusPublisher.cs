@@ -44,13 +44,13 @@ public interface IServiceBusPublisher
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Deschedules a message that has not yet been published.
+    /// Cansels a scheduled publish of a message if it has not been published yet.
     /// </summary>
     /// <param name="topicOrQueue">The topic or queue name.</param>
-    /// <param name="sequenceNumber">The sequence number of the message to be descheduled.</param>
+    /// <param name="sequenceNumber">The sequence number of the scheduled message to cancel.</param>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/> used.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    Task DeschedulePublishAsync(
+    Task CancelScheduledPublishAsync(
         string topicOrQueue,
         long sequenceNumber,
         CancellationToken cancellationToken = default);

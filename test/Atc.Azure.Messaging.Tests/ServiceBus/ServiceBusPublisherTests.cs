@@ -152,7 +152,7 @@ public class ServiceBusPublisherTests
             .GetSender(topicName)
             .Returns(sender);
 
-        await sut.DeschedulePublishAsync(
+        await sut.CancelScheduledPublishAsync(
             topicName,
             sequenceNumber,
             cancellationToken);
