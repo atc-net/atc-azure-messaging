@@ -24,6 +24,24 @@ public interface IServiceBusPublisher
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Publishes multiple messages in batches. The list of messages will be split in multiple batches if the messages exceeds a single batch size.
+    /// </summary>
+    /// <param name="topicOrQueue">The topic or queue name.</param>
+    /// <param name="messages">The messages to be published.</param>
+    /// <param name="sessionId">Optional id for appending the message to a known session. If not set, then defaults to a new session.</param>
+    /// <param name="properties">Optional custom metadata about the message.</param>
+    /// <param name="timeToLive">Optional <see cref="TimeSpan"/> for message to be consumed. If not set, then defaults to the value specified on queue or topic.</param>
+    /// <param name="cancellationToken">The <see cref="CancellationToken"/> used.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    Task PublishAsync(
+        string topicOrQueue,
+        IReadOnlyCollection<object> messages,
+        string? sessionId = null,
+        IDictionary<string, string>? properties = null,
+        TimeSpan? timeToLive = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Schedules a message for publishing at a later time.
     /// </summary>
     /// <param name="topicOrQueue">The topic or queue name.</param>
@@ -44,7 +62,7 @@ public interface IServiceBusPublisher
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Cansels a scheduled publish of a message if it has not been published yet.
+    /// Cancels a scheduled publish of a message if it has not been published yet.
     /// </summary>
     /// <param name="topicOrQueue">The topic or queue name.</param>
     /// <param name="sequenceNumber">The sequence number of the scheduled message to cancel.</param>

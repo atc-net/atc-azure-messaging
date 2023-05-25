@@ -28,6 +28,60 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
                 cancellationToken);
     }
 
+    public async Task PublishAsync(
+        string topicOrQueue,
+        IReadOnlyCollection<object> messages,
+        string? sessionId = null,
+        IDictionary<string, string>? properties = null,
+        TimeSpan? timeToLive = null,
+        CancellationToken cancellationToken = default)
+    {
+        var sender = clientProvider.GetSender(topicOrQueue);
+
+        var batch = await sender
+            .CreateMessageBatchAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        foreach (var message in messages)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
+
+            var busMessage = CreateServiceBusMessage(
+                    sessionId,
+                    JsonSerializer.Serialize(message),
+                    properties,
+                    timeToLive);
+
+            if (batch.TryAddMessage(busMessage))
+            {
+                continue;
+            }
+
+            await sender
+                .SendMessagesAsync(batch, cancellationToken)
+                .ConfigureAwait(false);
+
+            batch.Dispose();
+            batch = await sender
+                .CreateMessageBatchAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            if (!batch.TryAddMessage(busMessage))
+            {
+                throw new InvalidOperationException("Unable to add message to batch. The message size exceeds what can be send in a batch");
+            }
+        }
+
+        await sender
+            .SendMessagesAsync(batch, cancellationToken)
+            .ConfigureAwait(false);
+
+        batch.Dispose();
+    }
+
     public Task<long> SchedulePublishAsync(
         string topicOrQueue,
         object message,
