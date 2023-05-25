@@ -115,6 +115,27 @@ internal class BarPublisher
 }
 ```
 
+### Batch Publish
+
+Multiple messages can also be published in batches to a topic or queue. Simply call the `PublishAsync` method with a list of messages. The messages will be added to a batch until the batch is full before it the batch is published and continue to work on the remaining messages. This process continues until all messages are consumed. 
+
+An `InvalidOperationException` is thrown if a single message cannot fit inside a batch by itself. In this case, any previous published batches will not be rolled back and any remaining messages will remain unpublished.
+
+```csharp
+internal class BarBatchPublisher 
+{
+    private readonly IServiceBusPublisher publisher;
+
+    public BarBatchPublisher(IServiceBusPublisher publisher)
+    {
+        this.publisher = publisher;
+    }
+
+    public Task Publish(object[] messages)
+        => publisher.PublishAsync("[existing servicebus topic]", messages);
+}
+```
+
 Here's a full example of how to use the publishers above using a Minimal API setup (SwaggerUI enabled) with a single endpoint called `POST /data` that accepts a simple request body `{ "a": "string", "b": "string", "c": "string" }` which publishes the request to an EventHub and a ServiceBus topic
 
 ```csharp
