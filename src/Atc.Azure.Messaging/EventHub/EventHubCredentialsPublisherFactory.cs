@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.EventHub;
 
 [SuppressMessage(
@@ -8,13 +10,16 @@ internal sealed class EventHubCredentialsPublisherFactory : IEventHubPublisherFa
 {
     private readonly string fullyQualifiedNamespace;
     private readonly DefaultAzureCredentialOptions credentialOptions;
+    private readonly IMessagePayloadSerializer messagePayloadSerializer;
 
     public EventHubCredentialsPublisherFactory(
         EventHubOptions options,
         EnvironmentOptions environmentOptions,
         ClientAuthorizationOptions clientCredentialOptions,
-        IAzureCredentialOptionsProvider credentialOptionsProvider)
+        IAzureCredentialOptionsProvider credentialOptionsProvider,
+        IMessagePayloadSerializer messagePayloadSerializer)
     {
+        this.messagePayloadSerializer = messagePayloadSerializer;
         this.fullyQualifiedNamespace = options.FullyQualifiedNamespace;
         this.credentialOptions = credentialOptionsProvider
             .GetAzureCredentialOptions(
@@ -24,8 +29,9 @@ internal sealed class EventHubCredentialsPublisherFactory : IEventHubPublisherFa
 
     public IEventHubPublisher Create(string eventHubName)
         => new EventHubPublisher(
-                new EventHubProducerClient(
-                    fullyQualifiedNamespace,
-                    eventHubName,
-                    new DefaultAzureCredential(credentialOptions)));
+            new EventHubProducerClient(
+                fullyQualifiedNamespace,
+                eventHubName,
+                new DefaultAzureCredential(credentialOptions)),
+            messagePayloadSerializer);
 }

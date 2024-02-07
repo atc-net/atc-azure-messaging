@@ -1,12 +1,18 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.ServiceBus;
 
 internal sealed class ServiceBusPublisher : IServiceBusPublisher
 {
     private readonly IServiceBusSenderProvider clientProvider;
+    private readonly IMessagePayloadSerializer messagePayloadSerializer;
 
-    public ServiceBusPublisher(IServiceBusSenderProvider clientProvider)
+    public ServiceBusPublisher(
+        IServiceBusSenderProvider clientProvider,
+        IMessagePayloadSerializer messagePayloadSerializer)
     {
         this.clientProvider = clientProvider;
+        this.messagePayloadSerializer = messagePayloadSerializer;
     }
 
     public Task PublishAsync(
@@ -22,7 +28,7 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
             .SendMessageAsync(
                 CreateServiceBusMessage(
                     sessionId,
-                    JsonSerializer.Serialize(message),
+                    messagePayloadSerializer.Serialize(message),
                     properties,
                     timeToLive),
                 cancellationToken);
@@ -50,10 +56,10 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
             }
 
             var busMessage = CreateServiceBusMessage(
-                    sessionId,
-                    JsonSerializer.Serialize(message),
-                    properties,
-                    timeToLive);
+                sessionId,
+                messagePayloadSerializer.Serialize(message),
+                properties,
+                timeToLive);
 
             if (batch.TryAddMessage(busMessage))
             {
@@ -71,7 +77,8 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
 
             if (!batch.TryAddMessage(busMessage))
             {
-                throw new InvalidOperationException("Unable to add message to batch. The message size exceeds what can be send in a batch");
+                throw new InvalidOperationException(
+                    "Unable to add message to batch. The message size exceeds what can be send in a batch");
             }
         }
 
@@ -96,7 +103,7 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
             .ScheduleMessageAsync(
                 CreateServiceBusMessage(
                     sessionId,
-                    JsonSerializer.Serialize(message),
+                    messagePayloadSerializer.Serialize(message),
                     properties,
                     timeToLive),
                 scheduledEnqueueTime,

@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.Tests.ServiceBus;
 
 public class ServiceBusPublisherTests
@@ -5,15 +7,19 @@ public class ServiceBusPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task Should_Get_ServiceBusSender_For_Topic(
         [Frozen] IServiceBusSenderProvider provider,
+        [Frozen] IMessagePayloadSerializer serializer,
         ServiceBusPublisher sut,
         [Substitute] ServiceBusSender sender,
         string topicName,
-        object messageBody,
+        string messageBody,
         IDictionary<string, string> properties,
         TimeSpan timeToLive,
         string sessionId,
         CancellationToken cancellationToken)
     {
+        serializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         provider
             .GetSender(default!)
             .ReturnsForAnyArgs(sender);
@@ -34,15 +40,19 @@ public class ServiceBusPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task Should_Send_Message_On_ServiceBusSender(
         [Frozen] IServiceBusSenderProvider provider,
+        [Frozen] IMessagePayloadSerializer serializer,
         ServiceBusPublisher sut,
         [Substitute] ServiceBusSender sender,
         string topicName,
-        object messageBody,
+        string messageBody,
         IDictionary<string, string> properties,
         TimeSpan timeToLive,
         string sessionId,
         CancellationToken cancellationToken)
     {
+        serializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         provider
             .GetSender(topicName)
             .Returns(sender);
@@ -70,7 +80,7 @@ public class ServiceBusPublisherTests
         message.Body
             .ToString()
             .Should()
-            .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
+            .BeEquivalentTo(messageBody);
         message.ApplicationProperties
             .Should()
             .BeEquivalentTo(properties);
@@ -82,17 +92,21 @@ public class ServiceBusPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task Should_Schedule_Message_On_ServiceBusSender(
         [Frozen] IServiceBusSenderProvider provider,
+        [Frozen] IMessagePayloadSerializer serializer,
         ServiceBusPublisher sut,
         [Substitute] ServiceBusSender sender,
         long expectedSequenceNumber,
         string topicName,
-        object messageBody,
+        string messageBody,
         DateTimeOffset scheduleTime,
         IDictionary<string, string> properties,
         TimeSpan timeToLive,
         string sessionId,
         CancellationToken cancellationToken)
     {
+        serializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         provider
             .GetSender(topicName)
             .Returns(sender);
@@ -130,7 +144,7 @@ public class ServiceBusPublisherTests
         message.Body
             .ToString()
             .Should()
-            .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
+            .BeEquivalentTo(messageBody);
         message.ApplicationProperties
             .Should()
             .BeEquivalentTo(properties);
@@ -167,12 +181,16 @@ public class ServiceBusPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task Should_Handle_Default_Parameters(
         [Frozen] IServiceBusSenderProvider provider,
+        [Frozen] IMessagePayloadSerializer messagePayloadSerializer,
         ServiceBusPublisher sut,
         [Substitute] ServiceBusSender sender,
         string topicName,
-        object messageBody,
+        string messageBody,
         string sessionId)
     {
+        messagePayloadSerializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         provider
             .GetSender(topicName)
             .Returns(sender);
@@ -200,7 +218,7 @@ public class ServiceBusPublisherTests
         message.Body
             .ToString()
             .Should()
-            .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
+            .BeEquivalentTo(messageBody);
         message.ApplicationProperties
             .Should()
             .BeEmpty();
@@ -282,10 +300,11 @@ public class ServiceBusPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task Should_Send_Message_On_ServiceBusSender_On_Message_Batch(
         [Frozen] IServiceBusSenderProvider provider,
+        [Frozen] IMessagePayloadSerializer serializer,
         ServiceBusPublisher sut,
         [Substitute] ServiceBusSender sender,
         string topicName,
-        object messageBody,
+        string messageBody,
         IDictionary<string, string> properties,
         TimeSpan timeToLive,
         string sessionId,
@@ -294,6 +313,9 @@ public class ServiceBusPublisherTests
         var batchList = new List<ServiceBusMessage>();
         var messageBatch = ServiceBusModelFactory.ServiceBusMessageBatch(265000, batchList);
 
+        serializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         provider
             .GetSender(default!)
             .ReturnsForAnyArgs(sender);
@@ -322,13 +344,13 @@ public class ServiceBusPublisherTests
         batchList[0].Body
             .ToString()
             .Should()
-            .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
+            .BeEquivalentTo(messageBody);
         batchList[0].ApplicationProperties
             .Should()
             .BeEquivalentTo(properties);
         batchList[0].TimeToLive
-           .Should()
-           .Be(timeToLive);
+            .Should()
+            .Be(timeToLive);
     }
 
     [Theory, AutoNSubstituteData]
@@ -372,10 +394,11 @@ public class ServiceBusPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task Should_Send_Multiple_Batches_If_When_Messages_Exceeds_Single_Batch(
         [Frozen] IServiceBusSenderProvider provider,
+        [Frozen] IMessagePayloadSerializer serializer,
         ServiceBusPublisher sut,
         [Substitute] ServiceBusSender sender,
         string topicName,
-        object messageBody,
+        string messageBody,
         IDictionary<string, string> properties,
         TimeSpan timeToLive,
         string sessionId,
@@ -386,6 +409,9 @@ public class ServiceBusPublisherTests
         var firstMessageBatch = ServiceBusModelFactory.ServiceBusMessageBatch(265000, firstBatchList, tryAddCallback: _ => false);
         var secondMessageBatch = ServiceBusModelFactory.ServiceBusMessageBatch(265000, secondBatchList);
 
+        serializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         provider
             .GetSender(default!)
             .ReturnsForAnyArgs(sender);
@@ -419,13 +445,13 @@ public class ServiceBusPublisherTests
         secondBatchList[0].Body
             .ToString()
             .Should()
-            .BeEquivalentTo(JsonSerializer.Serialize(messageBody));
+            .BeEquivalentTo(messageBody);
         secondBatchList[0].ApplicationProperties
             .Should()
             .BeEquivalentTo(properties);
         secondBatchList[0].TimeToLive
-           .Should()
-           .Be(timeToLive);
+            .Should()
+            .Be(timeToLive);
     }
 
     [Theory, AutoNSubstituteData]
@@ -443,7 +469,8 @@ public class ServiceBusPublisherTests
         var firstBatchList = new List<ServiceBusMessage>();
         var secondBatchList = new List<ServiceBusMessage>();
         var firstMessageBatch = ServiceBusModelFactory.ServiceBusMessageBatch(265000, firstBatchList, tryAddCallback: _ => false);
-        var secondMessageBatch = ServiceBusModelFactory.ServiceBusMessageBatch(265000, secondBatchList, tryAddCallback: _ => false);
+        var secondMessageBatch =
+            ServiceBusModelFactory.ServiceBusMessageBatch(265000, secondBatchList, tryAddCallback: _ => false);
 
         provider
             .GetSender(default!)

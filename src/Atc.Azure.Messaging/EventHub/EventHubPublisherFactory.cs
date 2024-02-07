@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.EventHub;
 
 [SuppressMessage(
@@ -7,15 +9,20 @@ namespace Atc.Azure.Messaging.EventHub;
 internal sealed class EventHubPublisherFactory : IEventHubPublisherFactory
 {
     private readonly string connectionString;
+    private readonly IMessagePayloadSerializer messagePayloadSerializer;
 
-    public EventHubPublisherFactory(EventHubOptions options)
+    public EventHubPublisherFactory(
+        EventHubOptions options,
+        IMessagePayloadSerializer messagePayloadSerializer)
     {
-        this.connectionString = options.ConnectionString;
+        this.messagePayloadSerializer = messagePayloadSerializer;
+        connectionString = options.ConnectionString;
     }
 
     public IEventHubPublisher Create(string eventHubName)
         => new EventHubPublisher(
             new EventHubProducerClient(
                 connectionString,
-                eventHubName));
+                eventHubName),
+            messagePayloadSerializer);
 }

@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.Tests.EventHub;
 
 public class EventHubPublisherTests
@@ -25,11 +27,15 @@ public class EventHubPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task PublishAsync_Calls_Client_With_Correct_MessageBody(
         [Frozen, Substitute] EventHubProducerClient client,
+        [Frozen] IMessagePayloadSerializer serializer,
         EventHubPublisher sut,
-        object messageBody,
+        string messageBody,
         IDictionary<string, string> properties,
         CancellationToken cancellationToken)
     {
+        serializer
+            .Serialize<object>(default!)
+            .ReturnsForAnyArgs(messageBody);
         await sut.PublishAsync(
             messageBody,
             properties,
@@ -43,7 +49,7 @@ public class EventHubPublisherTests
             .Should()
             .BeEquivalentTo(
                 Encoding.UTF8.GetBytes(
-                    JsonSerializer.Serialize(messageBody)));
+                    messageBody));
     }
 
     [Theory, AutoNSubstituteData]
