@@ -26,11 +26,20 @@ public static class ServiceCollectionExtensions
     /// Parameter is only considered if <paramref name="useAzureCredentials"/> is set to true.
     /// </para>
     /// </param>
+    /// <param name="jsonSerializerOptions">
+    /// Optional <see cref="JsonSerializerOptions"/> to customize the serialization settings
+    /// used by messaging components for serializing and deserializing message payloads.
+    /// <para>
+    /// Provides a way to specify custom serialization behavior.
+    /// When not provided, the default serialization settings of <see cref="System.Text.Json.JsonSerializer"/> are used.
+    /// </para>
+    /// </param>
     public static void ConfigureMessagingServices(
         this IServiceCollection services,
         IConfiguration configuration,
         bool useAzureCredentials = false,
-        IAzureCredentialOptionsProvider? credentialOptionsProvider = null)
+        IAzureCredentialOptionsProvider? credentialOptionsProvider = null,
+        JsonSerializerOptions? jsonSerializerOptions = null)
     {
         services.AddOptions<EventHubOptions>(configuration);
         services.AddOptions<ServiceBusOptions>(configuration);
@@ -51,6 +60,8 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IServiceBusClientFactory, ServiceBusClientFactory>();
         services.AddSingleton<IServiceBusSenderProvider, ServiceBusSenderProvider>();
         services.AddSingleton<IServiceBusPublisher, ServiceBusPublisher>();
+
+        services.AddSingleton(jsonSerializerOptions ?? new JsonSerializerOptions());
     }
 
     private static T AddOptions<T>(
