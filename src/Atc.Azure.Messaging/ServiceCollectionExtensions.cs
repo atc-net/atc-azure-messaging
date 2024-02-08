@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Microsoft.Extensions.DependencyInjection;
 
 [ExcludeFromCodeCoverage]
@@ -61,6 +63,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IServiceBusSenderProvider, ServiceBusSenderProvider>();
         services.AddSingleton<IServiceBusPublisher, ServiceBusPublisher>();
 
+        services.AddSingleton<IMessagePayloadSerializer, MessagePayloadSerializer>();
         services.AddSingleton(jsonSerializerOptions ?? new JsonSerializerOptions());
     }
 
