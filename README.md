@@ -77,6 +77,29 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureMessagingServices(builder.Configuration, true);
 ```
 
+## Custom JsonSerializerOptions
+
+You can customize JSON serialization in your application by injecting `JsonSerializerOptions` into the `ConfigureMessagingServices` method.
+
+### How to Use
+Pass your `JsonSerializerOptions` when setting up messaging services. If not provided, default settings are used.
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+var jsonOptions = new JsonSerializerOptions
+{
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    WriteIndented = true,
+};
+
+builder.Services.ConfigureMessagingServices(
+    builder.Configuration,
+    useAzureCredentials: true,
+    jsonSerializerOptions: jsonOptions
+);
+```
+
 ## Publishing to EventHub
 
 To publish events to an EventHub you need an instance of `IEventHubPublisher`, this can be constructed via the `IEventHubPublisherFactory` which exposes the `Create(string eventHubName)` method
