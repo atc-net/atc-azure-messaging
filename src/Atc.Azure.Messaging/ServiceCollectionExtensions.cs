@@ -63,8 +63,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IServiceBusSenderProvider, ServiceBusSenderProvider>();
         services.AddSingleton<IServiceBusPublisher, ServiceBusPublisher>();
 
-        services.AddSingleton<IMessagePayloadSerializer, MessagePayloadSerializer>();
-        services.AddSingleton(jsonSerializerOptions ?? new JsonSerializerOptions());
+        services.AddSingleton<IMessagePayloadSerializer>(
+            new MessagePayloadSerializer(
+                jsonSerializerOptions ?? new JsonSerializerOptions()));
     }
 
     private static T AddOptions<T>(
