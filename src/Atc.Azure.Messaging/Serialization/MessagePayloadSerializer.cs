@@ -11,7 +11,4 @@ public class MessagePayloadSerializer : IMessagePayloadSerializer
 
     public string Serialize<T>(T value)
         => JsonSerializer.Serialize(value, options);
-
-    public T? Deserialize<T>(string json)
-        => JsonSerializer.Deserialize<T>(json, options);
 }
