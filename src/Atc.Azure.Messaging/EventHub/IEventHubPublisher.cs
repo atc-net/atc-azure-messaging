@@ -12,4 +12,9 @@ public interface IEventHubPublisher : IAsyncDisposable
         object message,
         IDictionary<string, string>? messageProperties = null,
         CancellationToken cancellationToken = default);
+
+    Task PublishAsync(
+        string message,
+        IDictionary<string, string>? messageProperties = null,
+        CancellationToken cancellationToken = default);
 }

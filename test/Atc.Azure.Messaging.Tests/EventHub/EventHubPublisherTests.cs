@@ -29,13 +29,14 @@ public class EventHubPublisherTests
         [Frozen, Substitute] EventHubProducerClient client,
         [Frozen] IMessagePayloadSerializer serializer,
         EventHubPublisher sut,
-        string messageBody,
+        object messageBody,
+        string serializedMessage,
         IDictionary<string, string> properties,
         CancellationToken cancellationToken)
     {
         serializer
-            .Serialize<object>(default!)
-            .ReturnsForAnyArgs(messageBody);
+            .Serialize(messageBody)
+            .ReturnsForAnyArgs(serializedMessage);
         await sut.PublishAsync(
             messageBody,
             properties,
@@ -49,7 +50,31 @@ public class EventHubPublisherTests
             .Should()
             .BeEquivalentTo(
                 Encoding.UTF8.GetBytes(
-                    messageBody));
+                    serializedMessage));
+    }
+
+    [Theory, AutoNSubstituteData]
+    internal async Task PublishAsync_Calls_Client_With_Correct_Serialized_MessageBody(
+        [Frozen, Substitute] EventHubProducerClient client,
+        EventHubPublisher sut,
+        string serializedMessage,
+        IDictionary<string, string> properties,
+        CancellationToken cancellationToken)
+    {
+        await sut.PublishAsync(
+            serializedMessage,
+            properties,
+            cancellationToken);
+
+        var data = client
+            .ReceivedCallWithArgument<EventData[]>()
+            .Single();
+
+        data.Body.ToArray()
+            .Should()
+            .BeEquivalentTo(
+                Encoding.UTF8.GetBytes(
+                    serializedMessage));
     }
 
     [Theory, AutoNSubstituteData]

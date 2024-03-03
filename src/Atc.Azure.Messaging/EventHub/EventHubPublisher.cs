@@ -26,6 +26,17 @@ internal sealed class EventHubPublisher : IEventHubPublisher
             cancellationToken);
     }
 
+    public Task PublishAsync(
+        string message,
+        IDictionary<string, string>? messageProperties = null,
+        CancellationToken cancellationToken = default)
+    {
+        return PerformPublishAsync(
+            message,
+            messageProperties,
+            cancellationToken);
+    }
+
     private Task PerformPublishAsync(
         string messageBody,
         IDictionary<string, string>? messageProperties = null,
