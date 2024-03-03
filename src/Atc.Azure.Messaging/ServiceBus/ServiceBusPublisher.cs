@@ -34,6 +34,25 @@ internal sealed class ServiceBusPublisher : IServiceBusPublisher
                 cancellationToken);
     }
 
+    public Task PublishAsync(
+        string topicOrQueue,
+        string message,
+        string? sessionId = null,
+        IDictionary<string, string>? properties = null,
+        TimeSpan? timeToLive = null,
+        CancellationToken cancellationToken = default)
+    {
+        return clientProvider
+            .GetSender(topicOrQueue)
+            .SendMessageAsync(
+                CreateServiceBusMessage(
+                    sessionId,
+                    message,
+                    properties,
+                    timeToLive),
+                cancellationToken);
+    }
+
     public async Task PublishAsync(
         string topicOrQueue,
         IReadOnlyCollection<object> messages,

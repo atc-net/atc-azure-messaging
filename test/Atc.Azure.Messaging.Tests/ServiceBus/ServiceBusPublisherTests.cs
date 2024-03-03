@@ -490,4 +490,37 @@ public class ServiceBusPublisherTests
 
         return act.Should().ThrowAsync<InvalidOperationException>();
     }
+
+    [Theory, AutoNSubstituteData]
+    internal async Task Should_Publish_Serialized_Message_With_Correct_Properties(
+        [Frozen] IServiceBusSenderProvider provider,
+        ServiceBusPublisher sut,
+        [Substitute] ServiceBusSender sender,
+        string topicOrQueue,
+        string message,
+        string sessionId,
+        TimeSpan timeToLive,
+        CancellationToken cancellationToken)
+    {
+        provider
+            .GetSender(topicOrQueue)
+            .Returns(sender);
+
+        await sut.PublishAsync(
+            topicOrQueue,
+            message,
+            sessionId,
+            default,
+            timeToLive,
+            cancellationToken);
+
+        await sender
+            .Received(1)
+            .SendMessageAsync(
+                Arg.Is<ServiceBusMessage>(sbMessage =>
+                    sbMessage.Body.ToString() == message &&
+                    sbMessage.SessionId == sessionId &&
+                    sbMessage.TimeToLive == timeToLive),
+                cancellationToken);
+    }
 }
