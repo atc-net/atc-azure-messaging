@@ -1,12 +1,18 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.EventHub;
 
 internal sealed class EventHubPublisher : IEventHubPublisher
 {
     private readonly EventHubProducerClient client;
+    private readonly IMessagePayloadSerializer messagePayloadSerializer;
 
-    public EventHubPublisher(EventHubProducerClient client)
+    public EventHubPublisher(
+        EventHubProducerClient client,
+        IMessagePayloadSerializer messagePayloadSerializer)
     {
         this.client = client;
+        this.messagePayloadSerializer = messagePayloadSerializer;
     }
 
     public Task PublishAsync(
@@ -15,7 +21,18 @@ internal sealed class EventHubPublisher : IEventHubPublisher
         CancellationToken cancellationToken = default)
     {
         return PerformPublishAsync(
-            JsonSerializer.Serialize(message),
+            messagePayloadSerializer.Serialize(message),
+            messageProperties,
+            cancellationToken);
+    }
+
+    public Task PublishAsync(
+        string message,
+        IDictionary<string, string>? messageProperties = null,
+        CancellationToken cancellationToken = default)
+    {
+        return PerformPublishAsync(
+            message,
             messageProperties,
             cancellationToken);
     }
@@ -39,10 +56,7 @@ internal sealed class EventHubPublisher : IEventHubPublisher
         }
 
         return client.SendAsync(
-            new[]
-            {
-                eventData,
-            },
+            new[] { eventData, },
             cancellationToken);
     }
 

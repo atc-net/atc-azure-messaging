@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.Tests.EventHub;
 
 public class EventHubPublisherTests
@@ -25,11 +27,16 @@ public class EventHubPublisherTests
     [Theory, AutoNSubstituteData]
     internal async Task PublishAsync_Calls_Client_With_Correct_MessageBody(
         [Frozen, Substitute] EventHubProducerClient client,
+        [Frozen] IMessagePayloadSerializer serializer,
         EventHubPublisher sut,
         object messageBody,
+        string serializedMessage,
         IDictionary<string, string> properties,
         CancellationToken cancellationToken)
     {
+        serializer
+            .Serialize(messageBody)
+            .ReturnsForAnyArgs(serializedMessage);
         await sut.PublishAsync(
             messageBody,
             properties,
@@ -43,7 +50,31 @@ public class EventHubPublisherTests
             .Should()
             .BeEquivalentTo(
                 Encoding.UTF8.GetBytes(
-                    JsonSerializer.Serialize(messageBody)));
+                    serializedMessage));
+    }
+
+    [Theory, AutoNSubstituteData]
+    internal async Task PublishAsync_Calls_Client_With_Correct_Serialized_MessageBody(
+        [Frozen, Substitute] EventHubProducerClient client,
+        EventHubPublisher sut,
+        string serializedMessage,
+        IDictionary<string, string> properties,
+        CancellationToken cancellationToken)
+    {
+        await sut.PublishAsync(
+            serializedMessage,
+            properties,
+            cancellationToken);
+
+        var data = client
+            .ReceivedCallWithArgument<EventData[]>()
+            .Single();
+
+        data.Body.ToArray()
+            .Should()
+            .BeEquivalentTo(
+                Encoding.UTF8.GetBytes(
+                    serializedMessage));
     }
 
     [Theory, AutoNSubstituteData]

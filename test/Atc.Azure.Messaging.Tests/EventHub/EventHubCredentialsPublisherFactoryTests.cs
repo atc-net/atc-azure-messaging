@@ -1,3 +1,5 @@
+using Atc.Azure.Messaging.Serialization;
+
 namespace Atc.Azure.Messaging.Tests.EventHub;
 
 public class EventHubCredentialsPublisherFactoryTests
@@ -7,6 +9,7 @@ public class EventHubCredentialsPublisherFactoryTests
     [Theory, AutoNSubstituteData]
     public void Create_Returns_NotNull(
         [Frozen] IAzureCredentialOptionsProvider credentialOptionsProvider,
+        IMessagePayloadSerializer messagePayloadSerializer,
         EnvironmentOptions environmentOptions,
         ClientAuthorizationOptions authorizationOptions,
         string eventHubName)
@@ -14,7 +17,8 @@ public class EventHubCredentialsPublisherFactoryTests
             new EventHubOptions { FullyQualifiedNamespace = FullyQualifiedNamespace },
             environmentOptions,
             authorizationOptions,
-            credentialOptionsProvider)
+            credentialOptionsProvider,
+            messagePayloadSerializer)
         .Create(eventHubName)
         .Should()
         .NotBeNull();
@@ -22,6 +26,7 @@ public class EventHubCredentialsPublisherFactoryTests
     [Theory, AutoNSubstituteData]
     public void Create_Returns_IEventHubPublisher(
         [Frozen] IAzureCredentialOptionsProvider credentialOptionsProvider,
+        IMessagePayloadSerializer messagePayloadSerializer,
         EnvironmentOptions environmentOptions,
         ClientAuthorizationOptions authorizationOptions,
         string eventHubName)
@@ -29,7 +34,8 @@ public class EventHubCredentialsPublisherFactoryTests
             new EventHubOptions { FullyQualifiedNamespace = FullyQualifiedNamespace },
             environmentOptions,
             authorizationOptions,
-            credentialOptionsProvider)
+            credentialOptionsProvider,
+            messagePayloadSerializer)
         .Create(eventHubName)
         .Should()
         .BeAssignableTo<IEventHubPublisher>();
@@ -37,6 +43,7 @@ public class EventHubCredentialsPublisherFactoryTests
     [Theory, AutoNSubstituteData]
     public void Constructor_Calls_AzureCredentialsOptionsProvider(
         [Frozen] IAzureCredentialOptionsProvider credentialOptionsProvider,
+        IMessagePayloadSerializer messagePayloadSerializer,
         EventHubOptions eventHubOptions,
         EnvironmentOptions environmentOptions,
         ClientAuthorizationOptions authorizationOptions)
@@ -45,7 +52,8 @@ public class EventHubCredentialsPublisherFactoryTests
             eventHubOptions,
             environmentOptions,
             authorizationOptions,
-            credentialOptionsProvider);
+            credentialOptionsProvider,
+            messagePayloadSerializer);
 
         credentialOptionsProvider
             .Received(1)
