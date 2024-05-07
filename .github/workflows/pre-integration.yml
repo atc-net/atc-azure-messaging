@@ -66,7 +66,7 @@ jobs:
           dotnet-sonarscanner begin `
               /k:"atc-azure-messaging" `
               /o:"atc-net" `
-              /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
+              /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
               /d:sonar.host.url="https://sonarcloud.io" `
               /d:sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
 
@@ -93,4 +93,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
