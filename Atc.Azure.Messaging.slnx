@@ -10,5 +10,6 @@
     <Project Path="src/Atc.Azure.Messaging.Abstractions/Atc.Azure.Messaging.Abstractions.csproj" />
     <Project Path="src/Atc.Azure.Messaging.EventHub/Atc.Azure.Messaging.EventHub.csproj" />
     <Project Path="src/Atc.Azure.Messaging.ServiceBus/Atc.Azure.Messaging.ServiceBus.csproj" />
+    <Project Path="src/Atc.Azure.Messaging.StorageQueue/Atc.Azure.Messaging.StorageQueue.csproj" />
   </Folder>
 </Solution>
