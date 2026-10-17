@@ -1,6 +1,19 @@
 {
-	"Mappings": {
-		"Src": { "Paths": [ "src" ] },
-		"Test": { "Paths": [ "test" ] }
-	}
+  "projectTarget": "DotNet10",
+  "useLatestMinorNugetVersion": true,
+  "useTemporarySuppressions": false,
+  "temporarySuppressionAsExcel": false,
+  "analyzerProviderCollectingMode": "LocalCache",
+  "mappings": {
+    "src": {
+      "paths": [
+        "src"
+      ]
+    },
+    "test": {
+      "paths": [
+        "test"
+      ]
+    }
+  }
 }

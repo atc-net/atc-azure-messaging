@@ -348,6 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Local issue backlog (not tracked)
+issues/
+
+# Playwright MCP browser tool output (screenshots, logs, snapshots)
+.playwright-mcp/
+
 .idea/
-sample/SampleApi/appsettings.Development.json
-Atc.Azure.Messaging.lutconfig
