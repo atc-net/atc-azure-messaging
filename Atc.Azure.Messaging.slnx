@@ -8,5 +8,6 @@
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
     <Project Path="src/Atc.Azure.Messaging.Abstractions/Atc.Azure.Messaging.Abstractions.csproj" />
+    <Project Path="src/Atc.Azure.Messaging.EventHub/Atc.Azure.Messaging.EventHub.csproj" />
   </Folder>
 </Solution>

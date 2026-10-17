@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Atc.Azure.Messaging.EventHub</PackageId>
+    <PackageTags>azure;messaging;eventhubs;publisher;processor</PackageTags>
+    <Description>Typed publishers and hosted processors for Azure Event Hubs, with checkpointing in Azure Blob Storage.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Shared\*.cs" Link="Shared\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Messaging.EventHubs" Version="5.12.2" />
+    <PackageReference Include="Azure.Messaging.EventHubs.Processor" Version="5.12.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Azure.Messaging.Abstractions\Atc.Azure.Messaging.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
