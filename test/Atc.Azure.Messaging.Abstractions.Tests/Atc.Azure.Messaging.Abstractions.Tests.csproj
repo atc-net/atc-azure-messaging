@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Atc.Azure.Messaging.Abstractions\Atc.Azure.Messaging.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

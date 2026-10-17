@@ -12,4 +12,11 @@
     <Project Path="src/Atc.Azure.Messaging.ServiceBus/Atc.Azure.Messaging.ServiceBus.csproj" />
     <Project Path="src/Atc.Azure.Messaging.StorageQueue/Atc.Azure.Messaging.StorageQueue.csproj" />
   </Folder>
+  <Folder Name="/test/">
+    <File Path="test/Directory.Build.props" />
+    <Project Path="test/Atc.Azure.Messaging.Abstractions.Tests/Atc.Azure.Messaging.Abstractions.Tests.csproj" />
+    <Project Path="test/Atc.Azure.Messaging.EventHub.Tests/Atc.Azure.Messaging.EventHub.Tests.csproj" />
+    <Project Path="test/Atc.Azure.Messaging.ServiceBus.Tests/Atc.Azure.Messaging.ServiceBus.Tests.csproj" />
+    <Project Path="test/Atc.Azure.Messaging.StorageQueue.Tests/Atc.Azure.Messaging.StorageQueue.Tests.csproj" />
+  </Folder>
 </Solution>

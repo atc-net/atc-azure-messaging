@@ -56,3 +56,4 @@ dotnet_diagnostic.SA1649.severity = none            # https://github.com/atc-net
 
 dotnet_diagnostic.MA0015.severity = none            #
 dotnet_diagnostic.MA0048.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0048.md
+dotnet_diagnostic.CA2012.severity = none            # NSubstitute configures ValueTask returning members by calling them

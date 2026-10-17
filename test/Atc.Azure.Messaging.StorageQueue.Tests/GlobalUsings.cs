@@ -1,0 +1,17 @@
+global using System.Text.Json;
+global using Atc.Azure.Messaging.Internal;
+global using Atc.Azure.Messaging.Serialization;
+global using Atc.Azure.Messaging.StorageQueue.Builders;
+global using Atc.Azure.Messaging.StorageQueue.Options;
+global using Atc.Azure.Messaging.StorageQueue.Processing.Internal;
+global using Atc.Azure.Messaging.StorageQueue.Publishing.Internal;
+global using Atc.Azure.Messaging.Tests.Common;
+global using Azure;
+global using Azure.Storage.Queues;
+global using Azure.Storage.Queues.Models;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging.Abstractions;
+global using Microsoft.Extensions.Options;
+global using Microsoft.Extensions.Time.Testing;
