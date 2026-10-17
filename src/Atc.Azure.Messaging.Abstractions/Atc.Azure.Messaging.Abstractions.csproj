@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Atc.Azure.Messaging.Abstractions</PackageId>
+    <RootNamespace>Atc.Azure.Messaging</RootNamespace>
+    <PackageTags>azure;messaging;eventhubs;servicebus;storagequeue;abstractions</PackageTags>
+    <Description>Transport agnostic abstractions for publishing and processing messages with Atc.Azure.Messaging.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory.Data" Version="10.0.13" />
+  </ItemGroup>
+
+</Project>
