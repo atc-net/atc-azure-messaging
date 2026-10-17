@@ -5,6 +5,11 @@
     <File Path="README.md" />
     <File Path="release-please-config.json" />
   </Folder>
+  <Folder Name="/sample/">
+    <File Path="sample/Directory.Build.props" />
+    <Project Path="sample/Atc.Azure.Messaging.Sample.AppHost/Atc.Azure.Messaging.Sample.AppHost.csproj" />
+    <Project Path="sample/Atc.Azure.Messaging.Sample.Worker/Atc.Azure.Messaging.Sample.Worker.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
     <Project Path="src/Atc.Azure.Messaging.Abstractions/Atc.Azure.Messaging.Abstractions.csproj" />

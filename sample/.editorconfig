@@ -1,0 +1,69 @@
+# ATC coding rules - https://github.com/atc-net/atc-coding-rules
+# Version: 1.0.0
+# Updated: 03-06-2024
+# Location: sample
+# Distribution: DotNet9
+# Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
+
+##########################################
+# Code Analyzers Rules
+##########################################
+[*.{cs,csx,cake}]
+
+# AsyncFixer
+# http://www.asyncfixer.com
+
+
+# Asyncify
+# https://github.com/hvanbakel/Asyncify-CSharp
+
+
+# Meziantou
+# https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
+
+
+# Microsoft - Code Analysis
+# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+
+
+# Microsoft - Compiler Errors
+# https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/
+
+
+# Microsoft - FxCop
+# https://github.com/dotnet/roslyn-analyzers
+
+
+# SecurityCodeScan
+# https://security-code-scan.github.io/
+
+
+# StyleCop
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+
+# SonarAnalyzer.CSharp
+# https://rules.sonarsource.com/csharp
+
+dotnet_diagnostic.S1075.severity = none             # Refactor your code not to use hardcoded absolute paths or URIs
+
+
+##########################################
+# Custom - Code Analyzers Rules
+##########################################
+
+dotnet_diagnostic.MA0048.severity = none            # File name must match type name (top-level statements)
+dotnet_diagnostic.MA0016.severity = none            # Prefer using collection abstraction instead of implementation
+
+dotnet_diagnostic.CA1002.severity = none            # Change to use Collection, ReadOnlyCollection or KeyedCollection (https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1002)
+dotnet_diagnostic.CA1062.severity = none            # In externally visible method validate parameter is non-null before using it (https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1062)
+dotnet_diagnostic.CA1303.severity = none            # Do not pass literals as localized parameters (https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1303)
+dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates (https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1848)
+dotnet_diagnostic.CA1873.severity = none            #
+dotnet_diagnostic.CA2227.severity = none            # Change to be read-only by removing the property setter (https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2227)
+dotnet_diagnostic.CA2234.severity = none            # Uri instead of string (https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2234)
+
+dotnet_diagnostic.SA1402.severity = none            # File may only contain a single type
+dotnet_diagnostic.SA1649.severity = none            # File name should match first type name
+
+dotnet_diagnostic.S3267.severity = none             # Loop should be simplified
+dotnet_diagnostic.S4666.severity = none             #
